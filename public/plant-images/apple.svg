@@ -1,0 +1,9 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="400" fill="#f8f8f8"/>
+  <circle cx="200" cy="220" r="120" fill="#dc2626"/>
+  <path d="M200 100 Q 170 70 150 90" fill="none" stroke="#422006" stroke-width="6"/>
+  <path d="M200 100 Q 230 80 260 110" fill="#22c55e" stroke="#166534" stroke-width="4"/>
+  <path d="M200 100 Q 180 70 140 80" fill="#22c55e" stroke="#166534" stroke-width="4"/>
+  <text x="200" y="330" font-family="sans-serif" font-size="24" text-anchor="middle" fill="#333">Apple</text>
+</svg>
+

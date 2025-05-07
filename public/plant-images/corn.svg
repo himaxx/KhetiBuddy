@@ -1,0 +1,10 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="400" fill="#f8f8f8"/>
+  <path d="M180 100 L 180 280" stroke="#15803d" stroke-width="8"/>
+  <path d="M180 150 Q 130 170 100 150" fill="none" stroke="#15803d" stroke-width="4"/>
+  <path d="M180 200 Q 130 220 90 210" fill="none" stroke="#15803d" stroke-width="4"/>
+  <rect x="180" y="140" width="60" height="160" rx="10" fill="#eab308"/>
+  <path d="M190 160 L 230 160 M190 180 L 230 180 M190 200 L 230 200 M190 220 L 230 220 M190 240 L 230 240 M190 260 L 230 260" stroke="#854d0e" stroke-width="2"/>
+  <text x="200" y="330" font-family="sans-serif" font-size="24" text-anchor="middle" fill="#333">Corn</text>
+</svg>
+
