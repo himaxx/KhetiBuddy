@@ -191,14 +191,14 @@ const config = {
 
 <div align="center">
 
-### 🏠 Dashboard
-<img src="https://via.placeholder.com/800x500/f8fafc/1e293b?text=Beautiful+Dashboard+Screenshot" alt="Dashboard" style="border-radius: 10px; margin: 10px;">
+### 🏠 Home
+<img src="https://github.com/himaxx/KhetiBuddy/blob/main/Home.jpg" alt="Dashboard" style="border-radius: 10px; margin: 10px;">
 
 ### 🔬 Disease Detection
-<img src="https://via.placeholder.com/800x500/ecfdf5/059669?text=Disease+Detection+Interface" alt="Disease Detection" style="border-radius: 10px; margin: 10px;">
+<img src="https://github.com/himaxx/KhetiBuddy/blob/main/DD1.jpg" alt="Disease Detection" style="border-radius: 10px; margin: 10px;">
 
-### 💬 Chat Interface
-<img src="https://via.placeholder.com/800x500/eff6ff/2563eb?text=AI+Chat+Assistant" alt="Chat Interface" style="border-radius: 10px; margin: 10px;">
+<img src="https://github.com/himaxx/KhetiBuddy/blob/main/DD2.jpg" alt="Disease Detection" style="border-radius: 10px; margin: 10px;">
+
 
 </div>
 
