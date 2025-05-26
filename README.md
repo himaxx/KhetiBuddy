@@ -359,54 +359,15 @@ flowchart LR
       <img src="https://img.shields.io/badge/Accuracy-99.2%25-brightgreen?style=for-the-badge" />
       <br><b>Disease Detection</b>
     </td>
-    <td align="center">
-      <img src="https://img.shields.io/badge/Speed-<2s-blue?style=for-the-badge" />
-      <br><b>Analysis Time</b>
-    </td>
-    <td align="center">
-      <img src="https://img.shields.io/badge/Uptime-99.9%25-success?style=for-the-badge" />
-      <br><b>System Reliability</b>
-    </td>
-    <td align="center">
-      <img src="https://img.shields.io/badge/Users-10K+-orange?style=for-the-badge" />
-      <br><b>Active Farmers</b>
-    </td>
   </tr>
 </table>
 
-### 📊 **Benchmark Results**
-
-```
-🎯 Accuracy Comparison:
-├── KhetiBuddy AI Model:     ████████████████████ 99.2%
-├── Traditional Methods:     ████████████░░░░░░░░ 67.3%
-├── Competitor A:           ███████████████░░░░░ 84.7%
-└── Competitor B:           ████████████████░░░░ 91.1%
-
-⚡ Performance Metrics:
-├── Image Processing:       < 2 seconds
-├── Response Time:          < 500ms
-├── Concurrent Users:       1000+
-└── API Reliability:        99.9% uptime
-```
 
 </div>
 
 ---
 
-## 🤝 **Contributing**
 
-<div align="center">
-
-**🌟 Join Our Growing Community of Agricultural Innovators! 🌟**
-
-<img src="https://contrib.rocks/image?repo=himaxx/KhetiBuddy" alt="Contributors" />
-
-[![GitHub contributors](https://img.shields.io/github/contributors/himaxx/KhetiBuddy?style=for-the-badge&color=success)](https://github.com/himaxx/KhetiBuddy/graphs/contributors)
-[![GitHub last commit](https://img.shields.io/github/last-commit/himaxx/KhetiBuddy?style=for-the-badge&color=blue)](https://github.com/himaxx/KhetiBuddy/commits/main)
-[![GitHub pull requests](https://img.shields.io/github/contributors/himaxx/KhetiBuddy?style=for-the-badge&color=orange)](https://github.com/himaxx/KhetiBuddy/pulls)
-
-</div>
 
 ### 🔄 **Contribution Workflow**
 
@@ -459,36 +420,7 @@ gh pr create --title "✨ Add amazing feature" --body "Description of changes"
 
 ---
 
-## 🗺️ **Roadmap**
 
-<div align="center">
-
-```mermaid
-timeline
-    title KhetiBuddy Development Roadmap
-    
-    2024 Q4 : Core AI Engine
-             : Disease Detection
-             : Web Interface
-             
-    2025 Q1 : Mobile App Launch
-             : Voice Integration
-             : Multi-language Support
-             
-    2025 Q2 : IoT Integration
-             : Satellite Imagery
-             : Advanced Analytics
-             
-    2025 Q3 : Blockchain Integration
-             : Marketplace Features
-             : AI-Powered Recommendations
-             
-    2025 Q4 : Global Expansion
-             : Enterprise Solutions
-             : Research Partnerships
-```
-
-</div>
 
 ### 🎯 **Upcoming Features**
 
@@ -501,125 +433,9 @@ timeline
 - [ ] 🔗 **IoT Sensor Integration** for real-time monitoring
 - [ ] 🌐 **Blockchain** for supply chain transparency
 
----
 
-## 📊 **Analytics & Impact**
 
-<div align="center">
 
-### 🌍 **Global Reach**
-
-```
-🌎 Worldwide Usage:
-├── 🇮🇳 India:          ████████████████████ 45%
-├── 🇺🇸 United States:  ███████████████░░░░░ 22%
-├── 🇧🇷 Brazil:         ██████████░░░░░░░░░░ 15%
-├── 🇲🇽 Mexico:         ████████░░░░░░░░░░░░ 10%
-└── 🌏 Others:          ████░░░░░░░░░░░░░░░░ 8%
-```
-
-### 💰 **Economic Impact**
-
-<table align="center">
-  <tr>
-    <td align="center">
-      <h3>💰 $12M+</h3>
-      <p>Crop Losses Prevented</p>
-    </td>
-    <td align="center">
-      <h3>🌾 50K+</h3>
-      <p>Farms Protected</p>
-    </td>
-    <td align="center">
-      <h3>📈 73%</h3>
-      <p>Yield Improvement</p>
-    </td>
-    <td align="center">
-      <h3>⚡ 95%</h3>
-      <p>Faster Detection</p>
-    </td>
-  </tr>
-</table>
-
-</div>
-
----
-
-## 🏆 **Recognition & Awards**
-
-<div align="center">
-
-| 🏅 Award | 🏛️ Organization | 📅 Year |
-|:--------:|:---------------:|:-------:|
-| 🥇 **Best AI Innovation** | TechCrunch Disrupt | 2024 |
-| 🌟 **Agricultural Technology Award** | AgTech Summit | 2024 |
-| 🚀 **Startup of the Year** | Forbes 30 Under 30 | 2024 |
-| 🌱 **Sustainability Excellence** | UN Global Goals | 2024 |
-
-</div>
-
----
-
-## 📞 **Connect With Us**
-
-<div align="center">
-
-### 🌐 **Community & Support**
-
-<table>
-  <tr>
-    <td align="center">
-      <a href="https://discord.gg/khetibuddy">
-        <img src="https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white" alt="Discord"/>
-      </a>
-      <br><b>Join our community</b>
-    </td>
-    <td align="center">
-      <a href="https://twitter.com/khetibuddy">
-        <img src="https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white" alt="Twitter"/>
-      </a>
-      <br><b>Follow updates</b>
-    </td>
-    <td align="center">
-      <a href="https://linkedin.com/company/khetibuddy">
-        <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"/>
-      </a>
-      <br><b>Professional network</b>
-    </td>
-    <td align="center">
-      <a href="mailto:contact@khetibuddy.com">
-        <img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email"/>
-      </a>
-      <br><b>Direct contact</b>
-    </td>
-  </tr>
-</table>
-
-### 📧 **Newsletter**
-
-<a href="https://newsletter.khetibuddy.com">
-  <img src="https://img.shields.io/badge/📧_Subscribe_to_Newsletter-4285F4?style=for-the-badge&logo=google&logoColor=white" alt="Newsletter"/>
-</a>
-
-*Stay updated with the latest agricultural AI innovations and farming tips!*
-
-</div>
-
----
-
-## 📄 **License**
-
-<div align="center">
-
-This project is licensed under the **Apache 2.0 License** - see the [LICENSE](LICENSE) file for details.
-
-[![License](https://img.shields.io/github/license/himaxx/KhetiBuddy?style=for-the-badge&color=success)](LICENSE)
-
-**Free for academic and non-commercial use • Commercial licenses available**
-
-</div>
-
----
 
 ## 🙏 **Acknowledgments**
 
@@ -652,68 +468,14 @@ This project is licensed under the **Apache 2.0 License** - see the [LICENSE](LI
   </tr>
 </table>
 
-### 🌟 **Research Partners**
 
-- 🎓 **MIT Agricultural AI Lab** - Research collaboration
-- 🌾 **International Rice Research Institute** - Crop data
-- 🔬 **Cornell Plant Disease Center** - Disease classification
-- 🌍 **FAO Global Agriculture** - Sustainability guidelines
-
-</div>
-
----
-
-<div align="center">
-
-## 🌟 **Star History**
-
-<a href="https://star-history.com/#himaxx/KhetiBuddy&Date">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=himaxx/KhetiBuddy&type=Date&theme=dark" />
-    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=himaxx/KhetiBuddy&type=Date" />
-    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=himaxx/KhetiBuddy&type=Date" width="600" />
-  </picture>
-</a>
-
----
 
 <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 15px; color: white; margin: 20px 0;">
 
-### 🚀 **Ready to Transform Agriculture?**
-
-<table align="center" style="border: none;">
-  <tr>
-    <td align="center" style="border: none;">
-      <a href="#-quick-start-guide">
-        <img src="https://img.shields.io/badge/🚀_Get_Started-Success?style=for-the-badge&color=28a745" alt="Get Started"/>
-      </a>
-    </td>
-    <td align="center" style="border: none;">
-      <a href="https://demo.khetibuddy.com">
-        <img src="https://img.shields.io/badge/🌐_Live_Demo-Primary?style=for-the-badge&color=007bff" alt="Live Demo"/>
-      </a>
-    </td>
-    <td align="center" style="border: none;">
-      <a href="#-contributing">
-        <img src="https://img.shields.io/badge/🤝_Contribute-Warning?style=for-the-badge&color=ffc107" alt="Contribute"/>
-      </a>
-    </td>
-  </tr>
-</table>
-
-**Join thousands of farmers worldwide who are already using AI to protect their crops!**
-
 </div>
 
 ---
 
-### 💝 **Made with ❤️ for farmers around the world**
-
-**If KhetiBuddy helps your farming journey, please ⭐ star this repository!**
-
-<sub>🌱 Growing together, one crop at a time 🌾</sub>
-
----
 
 <sup>Last updated: May 2025 | Version 2.0.0 | Built with 🤖 AI and 💚 Love</sup>
 
