@@ -21,7 +21,7 @@
 ## 🎯 What is KhetiBuddy?
 
 <div align="center">
-<img src="https://via.placeholder.com/800x400/f0fdf4/22c55e?text=KhetiBuddy+Disease+Detection+Demo" alt="KhetiBuddy Demo" width="100%" style="border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+<img src="https://github.com/himaxx/KhetiBuddy/blob/main/KhetiBuddy%20-%20Modern%20Plant%20Health%20Assistant.mp4" alt="KhetiBuddy Demo" width="100%" style="border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
 </div>
 
 <br>
