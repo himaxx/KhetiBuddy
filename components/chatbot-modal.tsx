@@ -2,15 +2,17 @@
 
 import { useState, useRef, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Switch } from "@/components/ui/switch"
-import { Label } from "@/components/ui/label"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Mic, MicOff, Send, X, Volume2, MessageSquare, Wand2 } from "lucide-react"
+import { X, Volume2, Send, Activity, Shield, Zap } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
 import { useMediaQuery } from "@/hooks/use-media-query"
+import { chatbotService, type ChatMessage } from "@/services/chatbot-service"
+import { cn } from "@/lib/utils"
+import { FormattedMessage } from "@/components/formatted-message"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 interface ChatbotModalProps {
   isOpen: boolean
@@ -19,47 +21,54 @@ interface ChatbotModalProps {
   disease?: string
 }
 
-interface Message {
-  id: string
-  content: string
-  sender: "user" | "bot"
-  timestamp: Date
-  isVoice?: boolean
-}
-
 export default function ChatbotModal({ isOpen, onClose, plantName, disease }: ChatbotModalProps) {
-  const { t, language } = useLanguage()
-  const [messages, setMessages] = useState<Message[]>([])
+  const { language } = useLanguage()
+  const [messages, setMessages] = useState<ChatMessage[]>([])
   const [input, setInput] = useState("")
-  const [isRecording, setIsRecording] = useState(false)
   const [isSpeaking, setIsSpeaking] = useState(false)
   const [isVoiceMode, setIsVoiceMode] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [currentSpeakingId, setCurrentSpeakingId] = useState<string | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const isMobile = useMediaQuery("(max-width: 640px)")
 
   useEffect(() => {
     if (isOpen) {
-      // Add initial greeting
-      const initialMessage = disease
-        ? `Hello! I can help you with treatment options for ${disease} on your ${plantName}. What would you like to know?`
-        : `Hello! I can help you learn more about your ${plantName}. What would you like to know?`
+      if (disease) {
+        // Automatically trigger contextual message
+        const initialText = `I detected ${disease} on my ${plantName}. What is the precise diagnostic cure and treatment protocol?`
 
-      setMessages([
-        {
-          id: "welcome",
-          content: initialMessage,
-          sender: "bot",
-          timestamp: new Date(),
-        },
-      ])
+        setMessages([
+          {
+            id: "system-init",
+            role: "assistant",
+            content: `Neural advisor initialized for ${plantName} pathology detection. Analyzing ${disease}...`,
+            timestamp: new Date(),
+          },
+        ])
+
+        // Auto-send the actual query
+        setTimeout(() => {
+          handleSendMessage(initialText)
+        }, 800)
+      } else {
+        const initialMessage = `Hello! I'm your plant assistant. I see you're interested in ${plantName}. How can I help you today?`
+        setMessages([
+          {
+            id: "welcome",
+            role: "assistant",
+            content: initialMessage,
+            timestamp: new Date(),
+          },
+        ])
+      }
     } else {
-      // Reset state when modal closes
       setMessages([])
       setInput("")
       setIsSpeaking(false)
-      setIsRecording(false)
       setCurrentSpeakingId(null)
+      setError(null)
     }
   }, [isOpen, plantName, disease])
 
@@ -71,322 +80,273 @@ export default function ChatbotModal({ isOpen, onClose, plantName, disease }: Ch
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }
 
-  const handleSendMessage = () => {
-    if (!input.trim() && !isRecording) return
+  const handleSendMessage = async (forcedMessage?: string) => {
+    const textToProcess = forcedMessage || input
+    if (!textToProcess.trim() || isLoading) return
 
-    // Add user message
-    const userMessage: Message = {
+    const userMessage: ChatMessage = {
       id: Date.now().toString(),
-      content: isRecording ? "Voice message..." : input,
-      sender: "user",
+      role: "user",
+      content: textToProcess,
       timestamp: new Date(),
-      isVoice: isRecording,
     }
 
     setMessages((prev) => [...prev, userMessage])
+    setIsLoading(true)
+    setError(null)
     setInput("")
 
-    // Simulate bot response after a delay
-    setTimeout(() => {
-      let botResponse = ""
+    try {
+      const contextualMessage = disease
+        ? `[Context: Plant is ${plantName}, Disease is ${disease}] ${textToProcess}`
+        : `[Context: Plant is ${plantName}] ${textToProcess}`
 
-      if (disease) {
-        if (input.toLowerCase().includes("treatment") || input.toLowerCase().includes("cure")) {
-          botResponse = `For treating ${disease} on ${plantName}, I recommend removing affected leaves, applying a suitable fungicide, and ensuring proper air circulation. Would you like more specific instructions?`
-        } else if (input.toLowerCase().includes("prevent")) {
-          botResponse = `To prevent ${disease} from spreading or recurring, maintain proper spacing between plants, avoid overhead watering, and ensure good air circulation. Regular inspection of plants can help catch issues early.`
-        } else {
-          botResponse = `${disease} is a common issue with ${plantName} plants. It typically affects the leaves and can spread if not treated. Would you like to know about treatment options or prevention methods?`
+      const chatHistory = messages.map(m => ({
+        role: m.role as "user" | "assistant",
+        content: m.content
+      }));
+
+      const response = await chatbotService.sendMessage(contextualMessage, chatHistory)
+
+      if (response.status === "success" && response.message) {
+        const botMessageId = Date.now().toString()
+        const botMessage: ChatMessage = {
+          id: botMessageId,
+          role: "assistant",
+          content: response.message,
+          timestamp: new Date(),
         }
-      } else {
-        if (input.toLowerCase().includes("care") || input.toLowerCase().includes("water")) {
-          botResponse = `${plantName} prefers bright, indirect light and should be watered when the top inch of soil feels dry. They enjoy higher humidity but can adapt to average home conditions.`
-        } else if (input.toLowerCase().includes("propagate") || input.toLowerCase().includes("grow")) {
-          botResponse = `${plantName} can be propagated through stem cuttings. Cut a section with at least one node, place in water until roots develop, then transfer to soil.`
-        } else {
-          botResponse = `${plantName} is a popular houseplant known for its distinctive appearance. It's relatively easy to care for and can thrive in most indoor environments with proper attention. What specific aspect would you like to learn about?`
+        setMessages((prev) => [...prev, botMessage])
+
+        if (isVoiceMode) {
+          speakMessage(botMessageId, response.message)
         }
+      } else if (response.status === "error") {
+        setError(response.message || "Failed to get response")
       }
-
-      const botMessageId = Date.now().toString()
-      const botMessage: Message = {
-        id: botMessageId,
-        content: botResponse,
-        sender: "bot",
-        timestamp: new Date(),
-      }
-
-      setMessages((prev) => [...prev, botMessage])
-
-      // If in voice mode, automatically speak the bot response
-      if (isVoiceMode) {
-        setTimeout(() => {
-          speakMessage(botMessageId, botResponse)
-        }, 500)
-      }
-    }, 1000)
-
-    // Reset recording state if was recording
-    if (isRecording) {
-      setIsRecording(false)
+    } catch (err) {
+      setError("Communication failure with neural core.")
+      console.error(err)
+    } finally {
+      setIsLoading(false)
     }
   }
 
-  const toggleRecording = () => {
-    if (!isRecording) {
-      startRecording()
-    } else {
-      stopRecording()
-    }
-  }
-
-  const startRecording = () => {
-    setIsRecording(true)
-
-    // Simulate recording for 3 seconds
-    setTimeout(() => {
-      if (isRecording) {
-        stopRecording()
-        handleSendMessage()
-      }
-    }, 3000)
-  }
-
-  const stopRecording = () => {
-    setIsRecording(false)
-  }
-
-  const speakMessage = (id: string, message: string) => {
-    // Stop any currently playing speech
+  const speakMessage = async (id: string, message: string) => {
     if (isSpeaking) {
+      window.speechSynthesis.cancel()
       setIsSpeaking(false)
       setCurrentSpeakingId(null)
-      // In a real app: speechSynthesis.cancel()
     }
 
     setIsSpeaking(true)
     setCurrentSpeakingId(id)
 
-    // Simulate speech for 3 seconds
-    setTimeout(() => {
+    try {
+      const audioUrl = await chatbotService.speakText(message, language)
+      if (audioUrl) {
+        const audio = new Audio(audioUrl)
+        audio.play()
+        audio.onended = () => {
+          setIsSpeaking(false)
+          setCurrentSpeakingId(null)
+        }
+      } else {
+        setIsSpeaking(false)
+        setCurrentSpeakingId(null)
+      }
+    } catch (error) {
+      console.error("Error speaking message:", error)
       setIsSpeaking(false)
       setCurrentSpeakingId(null)
-    }, 3000)
-
-    // In a real app, you would use the Web Speech API:
-    // const utterance = new SpeechSynthesisUtterance(message)
-    // speechSynthesis.speak(utterance)
-    // utterance.onend = () => {
-    //   setIsSpeaking(false)
-    //   setCurrentSpeakingId(null)
-    // }
-  }
-
-  const handleVoiceModeToggle = (checked: boolean) => {
-    setIsVoiceMode(checked)
+    }
   }
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-md md:max-w-lg">
-        <DialogHeader className="flex flex-row items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse"></div>
-            <DialogTitle>KhetiBuddy Assistant</DialogTitle>
+      <DialogContent className="sm:max-w-md md:max-w-2xl h-[80vh] flex flex-col p-0 overflow-hidden border-none shadow-[0_0_80px_-20px_rgba(0,0,0,0.5)] bg-background/80 backdrop-blur-2xl">
+        <DialogHeader className="flex flex-row items-center justify-between px-6 py-4 border-b border-border/50 bg-muted/30">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20">
+              <Activity className="h-6 w-6" />
+            </div>
+            <div>
+              <DialogTitle className="text-xl font-black italic tracking-tight uppercase">Neural <span className="text-primary/60">Advisor</span></DialogTitle>
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Botanical Intelligence Core</p>
+            </div>
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="flex items-center space-x-2">
-              <Label htmlFor="voice-mode" className="text-xs">
-                <MessageSquare className="h-4 w-4 inline mr-1" />
-                <Wand2 className="h-4 w-4 inline mr-1" />
-              </Label>
-              <Switch id="voice-mode" checked={isVoiceMode} onCheckedChange={handleVoiceModeToggle} />
-              <Label htmlFor="voice-mode" className="text-xs">
-                <Mic className="h-4 w-4 inline mr-1" />
-                <Volume2 className="h-4 w-4 inline" />
-              </Label>
-            </div>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setIsVoiceMode(!isVoiceMode)}
+                    className={cn(
+                      "relative flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-500 overflow-hidden",
+                      isVoiceMode
+                        ? "bg-primary/20 text-primary border border-primary/30 shadow-[0_0_15px_-3px_rgba(var(--primary),0.4)]"
+                        : "bg-muted/50 text-muted-foreground border border-transparent hover:bg-muted"
+                    )}
+                  >
+                    <div className={cn("flex items-center gap-2 relative z-10", isVoiceMode ? "font-black" : "font-medium")}>
+                      {isVoiceMode ? <Activity className="w-3.5 h-3.5 animate-pulse" /> : <Volume2 className="w-3.5 h-3.5 opacity-50" />}
+                      <span className="text-[10px] uppercase tracking-widest">{isVoiceMode ? "Audio On" : "Audio Off"}</span>
+                    </div>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">
+                  <p>Toggle neural audio synthesis</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
 
-            <Button variant="ghost" size="icon" className="h-6 w-6" onClick={onClose}>
-              <X className="h-4 w-4" />
+            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full hover:bg-red-500/10 hover:text-red-500 transition-colors" onClick={onClose}>
+              <X className="h-5 w-5" />
             </Button>
           </div>
         </DialogHeader>
 
-        <div className="flex flex-col space-y-4 max-h-[60vh] overflow-y-auto p-4 -mx-4">
+        <div className="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-thin scrollbar-thumb-primary/10 scrollbar-track-transparent">
           <AnimatePresence initial={false}>
-            {messages.map((message) => (
+            {messages.map((message, index) => (
               <motion.div
                 key={message.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.2 }}
-                className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
+                initial={{ opacity: 0, x: message.role === "user" ? 20 : -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
               >
-                <div className={`flex gap-3 max-w-[80%] ${message.sender === "user" ? "flex-row-reverse" : ""}`}>
-                  {message.sender === "bot" && (
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage src="/placeholder1.svg?height=32&width=32&text=KB" />
-                      <AvatarFallback className="bg-primary text-primary-foreground">KB</AvatarFallback>
-                    </Avatar>
+                <div className={cn(
+                  "flex gap-4 max-w-[85%] group relative",
+                  message.role === "user" ? "flex-row-reverse" : "flex-row"
+                )}>
+                  {message.role === "assistant" && (
+                    <div className="flex-shrink-0 mt-1">
+                      <Avatar className="h-10 w-10 border-2 border-primary/20 shadow-lg">
+                        <AvatarImage src="/placeholder.svg?height=40&width=40&text=PC" />
+                        <AvatarFallback className="bg-primary/10 text-primary font-black">PC</AvatarFallback>
+                      </Avatar>
+                    </div>
                   )}
 
-                  <div className="space-y-1">
-                    <motion.div
-                      initial={{ scale: 0.8 }}
-                      animate={{ scale: 1 }}
-                      className={`rounded-lg px-4 py-2 relative ${
-                        message.sender === "user" ? "bg-primary text-primary-foreground" : "bg-muted"
-                      }`}
-                    >
-                      {/* Speech visualization for voice messages */}
-                      {message.isVoice && (
-                        <div className="flex items-center justify-center mb-1">
-                          {[...Array(5)].map((_, i) => (
-                            <motion.div
-                              key={i}
-                              className="w-1 mx-[1px] bg-current"
-                              animate={{
-                                height: ["4px", "12px", "4px"],
-                                opacity: [0.7, 1, 0.7],
-                              }}
-                              transition={{
-                                duration: 1,
-                                repeat: Number.POSITIVE_INFINITY,
-                                delay: i * 0.2,
-                              }}
-                            />
-                          ))}
-                        </div>
-                      )}
-
-                      {/* Special chat bubble for voice mode */}
-                      {isVoiceMode && (
-                        <motion.div
-                          className={`absolute ${message.sender === "user" ? "right-full mr-1" : "left-full ml-1"} top-1/2 -translate-y-1/2 w-2 h-2 rounded-full`}
-                          style={{
-                            background: message.sender === "user" ? "hsl(var(--primary))" : "hsl(var(--muted))",
-                          }}
+                  <div className={cn(
+                    "space-y-2",
+                    message.role === "user" ? "items-end" : "items-start"
+                  )}>
+                    <div className={cn(
+                      "rounded-3xl px-5 py-4 shadow-sm border transition-all duration-300",
+                      message.role === "user"
+                        ? "bg-primary text-primary-foreground border-primary/20 rounded-tr-none shadow-primary/20"
+                        : "bg-muted/40 backdrop-blur-md border-border/50 rounded-tl-none text-foreground"
+                    )}>
+                      {message.role === "assistant" ? (
+                        <FormattedMessage
+                          content={message.content}
+                          role="assistant"
+                          isTyping={index === messages.length - 1 && isLoading}
                         />
+                      ) : (
+                        <p className="text-sm font-medium leading-relaxed">{message.content}</p>
                       )}
+                    </div>
 
-                      {/* Futuristic speech bubbles design for voice mode */}
-                      {isVoiceMode && (
-                        <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-lg">
-                          <motion.div
-                            className={`absolute inset-x-0 bottom-0 h-1 ${
-                              message.sender === "user" ? "bg-primary-foreground/30" : "bg-foreground/10"
-                            }`}
-                            animate={{
-                              scaleX: currentSpeakingId === message.id ? [0.3, 1, 0.7, 0.9, 0.4] : 1,
-                            }}
-                            transition={{
-                              duration: 2,
-                              repeat: Number.POSITIVE_INFINITY,
-                              repeatType: "reverse",
-                            }}
-                          />
-
-                          {[...Array(3)].map((_, i) => (
-                            <motion.div
-                              key={i}
-                              className={`absolute w-12 h-12 rounded-full ${
-                                message.sender === "user" ? "bg-primary-foreground/5" : "bg-foreground/5"
-                              }`}
-                              style={{
-                                top: "50%",
-                                left: i === 0 ? "30%" : i === 1 ? "60%" : "10%",
-                              }}
-                              animate={{
-                                scale: currentSpeakingId === message.id ? [1, 1.5, 1] : [1, 1.1, 1],
-                                opacity: currentSpeakingId === message.id ? [0.1, 0.3, 0.1] : 0.1,
-                              }}
-                              transition={{
-                                duration: 3,
-                                repeat: Number.POSITIVE_INFINITY,
-                                delay: i * 0.5,
-                              }}
-                            />
-                          ))}
-                        </div>
-                      )}
-
-                      {message.content}
-
-                      {message.sender === "bot" && (
+                    <div className={cn(
+                      "flex items-center gap-2 px-2 opacity-0 group-hover:opacity-100 transition-opacity",
+                      message.role === "user" ? "flex-row-reverse" : "flex-row"
+                    )}>
+                      <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">
+                        {message.timestamp?.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                      </p>
+                      {message.role === "assistant" && (
                         <Button
                           variant="ghost"
                           size="icon"
-                          className={`h-6 w-6 ml-1 ${currentSpeakingId === message.id ? "text-primary animate-pulse" : "opacity-70 hover:opacity-100"}`}
+                          className={cn(
+                            "h-6 w-6 rounded-lg",
+                            currentSpeakingId === message.id ? "text-primary bg-primary/10" : "text-muted-foreground hover:text-primary hover:bg-primary/5"
+                          )}
                           onClick={() => speakMessage(message.id, message.content)}
-                          disabled={isSpeaking && currentSpeakingId !== message.id}
                         >
                           <Volume2 className="h-3 w-3" />
                         </Button>
                       )}
-                    </motion.div>
-
-                    <p className="text-xs text-muted-foreground px-1">
-                      {message.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                    </p>
+                    </div>
                   </div>
                 </div>
               </motion.div>
             ))}
           </AnimatePresence>
+
+          {isLoading && messages[messages.length - 1]?.role === "user" && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start">
+              <div className="flex gap-4 max-w-[85%]">
+                <div className="h-10 w-10 rounded-full bg-primary/5 flex items-center justify-center border border-primary/10">
+                  <Activity className="h-5 w-5 text-primary animate-pulse" />
+                </div>
+                <div className="bg-muted/20 rounded-3xl rounded-tl-none px-6 py-4 border border-border/50">
+                  <div className="flex gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary/40 animate-bounce [animation-delay:-0.3s]"></span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary/40 animate-bounce [animation-delay:-0.15s]"></span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary/40 animate-bounce"></span>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {error && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-center p-4">
+              <div className="bg-red-500/10 border border-red-500/20 text-red-500 text-[10px] font-black uppercase tracking-[0.2em] px-4 py-2 rounded-full">
+                {error}
+              </div>
+            </motion.div>
+          )}
+
           <div ref={messagesEndRef} />
         </div>
 
-        <DialogFooter className="flex-col sm:flex-row sm:justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <Button
-              variant={isRecording ? "destructive" : "outline"}
-              size="icon"
-              onClick={toggleRecording}
-              className={isRecording ? "animate-pulse" : ""}
-            >
-              {isRecording ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
-            </Button>
-
-            {(isSpeaking || isRecording) && (
-              <div className="flex items-center gap-1">
-                <span className="text-xs text-muted-foreground">{isSpeaking ? "Speaking" : "Listening"}</span>
-                <div className="flex items-center gap-0.5">
-                  {[1, 2, 3].map((i) => (
-                    <motion.div
-                      key={i}
-                      animate={{ height: ["4px", "12px", "4px"] }}
-                      transition={{
-                        duration: 1,
-                        repeat: Number.POSITIVE_INFINITY,
-                        delay: i * 0.2,
-                      }}
-                      className="w-1 bg-primary rounded-full"
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
+        <div className="p-6 bg-muted/30 border-t border-border/50">
+          <div className="max-w-4xl mx-auto flex items-end gap-3">
+            <div className="flex-1 relative group">
+              <Input
+                placeholder={isLoading ? "Neural core processing..." : "Consult the plant pathology advisor..."}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault()
+                    handleSendMessage()
+                  }
+                }}
+                className="w-full bg-background/50 border-2 border-border/50 focus:border-primary/50 rounded-2xl h-14 pl-6 pr-14 text-sm font-medium transition-all group-hover:border-border"
+                disabled={isLoading}
+              />
+              <Button
+                type="submit"
+                size="icon"
+                onClick={() => handleSendMessage()}
+                disabled={isLoading || !input.trim()}
+                className="absolute right-2 top-2 h-10 w-10 rounded-xl bg-primary shadow-lg shadow-primary/20 hover:scale-105 transition-transform"
+              >
+                <Send className="h-5 w-5" />
+              </Button>
+            </div>
           </div>
-
-          <div className="flex w-full sm:max-w-[300px] items-center space-x-2">
-            <Input
-              placeholder={isVoiceMode ? "Voice mode enabled..." : "Type your message..."}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
-              className="flex-1"
-              disabled={isVoiceMode || isRecording}
-            />
-            <Button type="submit" size="icon" onClick={handleSendMessage} disabled={isRecording}>
-              <Send className="h-4 w-4" />
-            </Button>
+          <div className="mt-4 flex items-center justify-center gap-6">
+            <div className="flex items-center gap-2 opacity-40 hover:opacity-100 transition-opacity cursor-help">
+              <Shield className="w-3 h-3 text-primary" />
+              <span className="text-[8px] font-black uppercase tracking-widest">End-to-End Encrypted</span>
+            </div>
+            <div className="flex items-center gap-2 opacity-40 hover:opacity-100 transition-opacity cursor-help">
+              <Zap className="w-3 h-3 text-primary" />
+              <span className="text-[8px] font-black uppercase tracking-widest">Powered by OpenRouter</span>
+            </div>
           </div>
-        </DialogFooter>
+        </div>
       </DialogContent>
     </Dialog>
   )
 }
-

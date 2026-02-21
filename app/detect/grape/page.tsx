@@ -1,13 +1,7 @@
 "use client"
 
-import PlantDiseaseDetectionPage from "@/components/plant-disease-detection-page"
+import NeuralDiseaseDetectionPage from "@/components/neural-disease-detection-page"
 
 export default function GrapeDetectPage() {
-  return (
-    <PlantDiseaseDetectionPage
-      plantType="grape"
-      diseases={["Black Rot", "Esca (Black Measles)", "Isariopsis Leaf Spot", "Healthy"]}
-    />
-  )
+  return <NeuralDiseaseDetectionPage plantType="grape" />
 }
-

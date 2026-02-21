@@ -1,8 +1,7 @@
 "use client"
 
-import PlantDiseaseDetectionPage from "@/components/plant-disease-detection-page"
+import NeuralDiseaseDetectionPage from "@/components/neural-disease-detection-page"
 
 export default function PotatoDetectPage() {
-  return <PlantDiseaseDetectionPage plantType="potato" diseases={["Early Blight", "Late Blight", "Healthy"]} />
+  return <NeuralDiseaseDetectionPage plantType="potato" />
 }
-

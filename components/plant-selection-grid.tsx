@@ -2,67 +2,63 @@
 
 import { motion } from "framer-motion"
 import PlantSelectionCard from "./plant-selection-card"
-
-const plants = [
-  {
-    id: "tomato",
-    name: "Tomato",
-    image: "/plant-images-jpg/tomato.jpg",
-    description: "Detect common tomato diseases like early blight, late blight, and leaf spot.",
-    hasModel: true,
-  },
-  {
-    id: "potato",
-    name: "Potato",
-    image: "/plant-images-jpg/potato.jpg",
-    description: "Identify potato diseases including late blight, early blight, and black scurf.",
-    hasModel: true,
-  },
-  {
-    id: "corn",
-    name: "Corn",
-    image: "/plant-images-jpg/corn.jpg",
-    description: "Detect corn diseases such as northern leaf blight, common rust, and gray leaf spot.",
-    hasModel: true,
-  },
-  {
-    id: "apple",
-    name: "Apple",
-    image: "/plant-images-jpg/apple.jpg",
-    description: "Identify apple diseases like apple scab, black rot, and cedar apple rust.",
-    hasModel: true,
-  },
-  {
-    id: "grape",
-    name: "Grape",
-    image: "/plant-images-jpg/grape.jpg",
-    description: "Detect grape diseases including black rot, esca, and leaf blight.",
-    hasModel: true,
-  },
-  {
-    id: "rice",
-    name: "Rice",
-    image: "/plant-images-jpg/rice.jpg",
-    description: "Identify rice diseases such as blast, brown spot, and bacterial leaf blight.",
-    hasModel: false,
-  },
-  {
-    id: "wheat",
-    name: "Wheat",
-    image: "/plant-images-jpg/wheat.jpg",
-    description: "Detect wheat diseases like leaf rust, powdery mildew, and septoria leaf blotch.",
-    hasModel: false,
-  },
-  {
-    id: "cotton",
-    name: "Cotton",
-    image: "/plant-images-jpg/cotton.jpg",
-    description: "Identify cotton diseases including bacterial blight, verticillium wilt, and leaf spot.",
-    hasModel: false,
-  },
-]
+import { useLanguage } from "@/contexts/language-context"
 
 export default function PlantSelectionGrid() {
+  const { t } = useLanguage()
+
+  // Descriptions use t() — each one is now i18n-aware
+  const plants = [
+    {
+      id: "tomato",
+      image: "/plant-images-jpg/tomato.jpg",
+      description: t("plant.tomato.desc"),
+      hasModel: true,
+    },
+    {
+      id: "potato",
+      image: "/plant-images-jpg/potato.jpg",
+      description: t("plant.potato.desc"),
+      hasModel: true,
+    },
+    {
+      id: "corn",
+      image: "/plant-images-jpg/corn.jpg",
+      description: t("plant.corn.desc"),
+      hasModel: true,
+    },
+    {
+      id: "apple",
+      image: "/plant-images-jpg/apple.jpg",
+      description: t("plant.apple.desc"),
+      hasModel: true,
+    },
+    {
+      id: "grape",
+      image: "/plant-images-jpg/grape.jpg",
+      description: t("plant.grape.desc"),
+      hasModel: true,
+    },
+    {
+      id: "rice",
+      image: "/plant-images-jpg/rice.jpg",
+      description: t("plant.rice.desc"),
+      hasModel: true,
+    },
+    {
+      id: "wheat",
+      image: "/plant-images-jpg/wheat.jpg",
+      description: t("plant.wheat.desc"),
+      hasModel: true,
+    },
+    {
+      id: "cotton",
+      image: "/plant-images-jpg/cotton.jpg",
+      description: t("plant.cotton.desc"),
+      hasModel: true,
+    },
+  ]
+
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -75,7 +71,7 @@ export default function PlantSelectionGrid() {
           >
             <PlantSelectionCard
               id={plant.id}
-              name={plant.name}
+              name={t(`plant.${plant.id}`)}
               image={plant.image}
               description={plant.description}
               hasModel={plant.hasModel}
@@ -86,4 +82,3 @@ export default function PlantSelectionGrid() {
     </motion.div>
   )
 }
-

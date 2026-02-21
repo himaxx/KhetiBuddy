@@ -9,13 +9,29 @@ import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Mic, MicOff, Send, Volume2 } from "lucide-react"
+import {
+  Send,
+  Mic,
+  MicOff,
+  Volume2,
+  VolumeX,
+  Activity,
+  Trash2,
+  RefreshCw,
+  Info,
+  Maximize2,
+  Minimize2,
+  Settings,
+  Shield,
+  Zap,
+} from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { chatbotService, type ChatMessage } from "@/services/chatbot-service"
 import { Badge } from "@/components/ui/badge"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
+import { FormattedMessage } from "@/components/formatted-message"
 
 // SpeechRecognition interface declarations remain unchanged (omitted for brevity)
 
@@ -27,6 +43,7 @@ interface AIChatbotProps {
   avatarFallback?: string
   className?: string
   plantContext?: string
+  preloadedMessage?: string
 }
 
 export default function AIChatbot({
@@ -37,6 +54,7 @@ export default function AIChatbot({
   avatarFallback = "KB",
   className = "",
   plantContext,
+  preloadedMessage,
 }: AIChatbotProps) {
   const { t, language } = useLanguage()
   const [messages, setMessages] = useState<ChatMessage[]>([])
@@ -88,17 +106,27 @@ export default function AIChatbot({
     }
   }, [isSpeaking])
 
+  useEffect(() => {
+    if (preloadedMessage && messages.length === 1) { // Only if just the welcome message exists
+      const timer = setTimeout(() => {
+        handleSendMessage(preloadedMessage)
+      }, 500)
+      return () => clearTimeout(timer)
+    }
+  }, [preloadedMessage, messages.length])
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }
 
-  const handleSendMessage = async () => {
-    if ((!input.trim() && !isRecording) || isLoading) return
+  const handleSendMessage = async (forcedMessage?: string) => {
+    const textToProcess = forcedMessage || input
+    if ((!textToProcess.trim() && !isRecording) || isLoading) return
 
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
       role: "user",
-      content: isRecording ? "Processing voice message..." : input,
+      content: isRecording ? "Processing voice message..." : textToProcess,
       timestamp: new Date(),
     }
 
@@ -108,12 +136,18 @@ export default function AIChatbot({
     setInput("")
 
     try {
-      const messageToSend = isRecording ? userMessage.content : input
+      const messageToSend = textToProcess
       const contextualMessage = plantContext
         ? `[Context: User is asking about ${plantContext}] ${messageToSend}`
         : messageToSend
 
-      const response = await chatbotService.sendMessage(contextualMessage)
+      // Prepare history for better context
+      const chatHistory = messages.map(m => ({
+        role: m.role as "user" | "assistant",
+        content: m.content
+      }));
+
+      const response = await chatbotService.sendMessage(contextualMessage, chatHistory)
 
       const botMessage: ChatMessage = {
         id: `bot-${Date.now()}`,
@@ -134,7 +168,7 @@ export default function AIChatbot({
         return [...prev, botMessage]
       })
 
-      if (isVoiceMode) {
+      if (isVoiceMode && botMessage.id) {
         speakMessage(botMessage.id, botMessage.content)
       }
     } catch (err) {
@@ -234,18 +268,34 @@ export default function AIChatbot({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <div className="flex items-center space-x-1">
-                  <Switch
-                    id="voice-mode"
-                    checked={isVoiceMode}
-                    onCheckedChange={handleVoiceModeToggle}
-                    size="sm"
-                    className="data-[state=checked]:bg-primary"
-                  />
-                  <Label htmlFor="voice-mode" className="text-xs sr-only">
-                    Voice Mode
-                  </Label>
-                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleVoiceModeToggle(!isVoiceMode)}
+                  className={cn(
+                    "relative flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-500 overflow-hidden",
+                    isVoiceMode
+                      ? "bg-primary/20 text-primary border border-primary/30 shadow-[0_0_15px_-3px_rgba(var(--primary),0.4)]"
+                      : "bg-muted/50 text-muted-foreground border border-transparent hover:bg-muted"
+                  )}
+                >
+                  <div className={cn(
+                    "flex items-center gap-2 relative z-10",
+                    isVoiceMode ? "font-black" : "font-medium"
+                  )}>
+                    {isVoiceMode ? <Activity className="w-3.5 h-3.5 animate-pulse" /> : <VolumeX className="w-3.5 h-3.5 opacity-50" />}
+                    <span className="text-[10px] uppercase tracking-widest">{isVoiceMode ? "Neural Audio On" : "Voice Off"}</span>
+                  </div>
+                  {isVoiceMode && (
+                    <motion.div
+                      layoutId="voiceModeGlow"
+                      className="absolute inset-0 bg-primary/10"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.5 }}
+                    />
+                  )}
+                </Button>
               </TooltipTrigger>
               <TooltipContent side="bottom">
                 <p>Toggle voice mode</p>
@@ -281,23 +331,42 @@ export default function AIChatbot({
                     <motion.div
                       initial={{ scale: 0.8 }}
                       animate={{ scale: 1 }}
-                      className={`rounded-lg px-4 py-2 relative ${
-                        message.role === "user" ? "bg-primary text-primary-foreground" : "bg-muted"
-                      }`}
+                      className={`rounded-lg px-4 py-2 relative ${message.role === "user" ? "bg-primary text-primary-foreground" : "bg-muted"
+                        }`}
                     >
-                      {message.content}
+                      <FormattedMessage
+                        content={message.content}
+                        role={message.role as "user" | "assistant"}
+                        isTyping={message.role === "assistant" && message.id === messages[messages.length - 1].id}
+                      />
                       {message.role === "assistant" && (
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className={`h-6 w-6 ml-1 absolute -right-7 top-1 opacity-0 group-hover:opacity-70 hover:opacity-100 ${
-                            currentSpeakingId === message.id ? "text-primary opacity-100 animate-pulse" : ""
-                          }`}
-                          onClick={() => speakMessage(message.id!, message.content)}
-                          disabled={isSpeaking && currentSpeakingId !== message.id}
-                        >
-                          <Volume2 className="h-3 w-3" />
-                        </Button>
+                        <div className="absolute -right-12 top-0 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className={cn(
+                              "h-8 w-8 rounded-full bg-background/50 backdrop-blur-sm border border-border/50 shadow-sm",
+                              currentSpeakingId === message.id ? "text-primary border-primary animate-pulse" : ""
+                            )}
+                            onClick={() => speakMessage(message.id!, message.content)}
+                            disabled={isSpeaking && currentSpeakingId !== message.id}
+                          >
+                            <Volume2 className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 rounded-full bg-background/50 backdrop-blur-sm border border-border/50 shadow-sm hover:text-primary transition-colors"
+                            onClick={() => {
+                              navigator.clipboard.writeText(message.content)
+                              // Optional: Add a toast notification here
+                            }}
+                          >
+                            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                            </svg>
+                          </Button>
+                        </div>
                       )}
                     </motion.div>
                     {message.timestamp && (

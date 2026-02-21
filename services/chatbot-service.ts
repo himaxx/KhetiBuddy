@@ -23,49 +23,20 @@ export interface ChatbotState {
 
 // The main chatbot service
 export const chatbotService = {
-  // Send a message to the chatbot API (unchanged)
-  async sendMessage(message: string): Promise<ChatbotResponse> {
+  // Send a message to the chatbot API
+  async sendMessage(message: string, history: any[] = []): Promise<ChatbotResponse> {
     try {
-      const response = await fetch(
-        "https://himmaannsshhuu-langflow.hf.space/api/v1/run/091c2c86-1b23-442f-b82a-09c961f8625a?stream=false",
-        {
-          method: "POST",
-          headers: {
-            "Authorization": "Bearer <TOKEN>", // Replace <TOKEN> with your actual token
-            "Content-Type": "application/json",
-            "x-api-key": "<your api key>", // Replace <your api key> with your actual API key
-          },
-          body: JSON.stringify({
-            input_value: message,
-            output_type: "chat",
-            input_type: "chat",
-            tweaks: {
-              "ChatInput-2dWln": {},
-              "ChatOutput-DcQGT": {},
-              "Memory-JcssA": {},
-              "Prompt-k7ER5": {},
-              "GoogleGenerativeAIModel-jIQYE": {}
-            }
-          }),
-        },
-      )
+      const { openrouterService } = await import("./openrouter-service")
+      const answer = await openrouterService.chat(message, history)
 
-      if (!response.ok) {
-        throw new Error(`API error: ${response.status}`)
-      }
-
-      const data = await response.json()
-      console.log("API response:", data)
-
-      // The response structure may differ, adjust as needed
       return {
-        message: data.outputs?.[0]?.outputs?.[0]?.results?.message?.text || "Sorry, I couldn't process your request.",
+        message: answer,
         status: "success",
       }
     } catch (error) {
       console.error("Error sending message to chatbot:", error)
       return {
-        message: "Sorry, there was an error processing your request. Please try again later.",
+        message: "Sorry, I'm having trouble connecting to my neural network. Please check your connection or try again later.",
         status: "error",
       }
     }
