@@ -77,11 +77,11 @@ export default function ExploreChatbotSection({ plantName, preloadedMessage }: E
               className="grid grid-cols-1 gap-6"
             >
               <AIChatbot
-                title="KhetiBuddy Universal"
+                title="CropSaviour Universal"
                 description="General agricultural intelligence and botanical knowledge base."
                 initialMessage="Welcome to the universal core. I can provide data on over 10,000 species and optimal farming practices. How may I assist your query?"
-                avatarSrc="/placeholder.svg?height=40&width=40&text=KB"
-                avatarFallback="KB"
+                avatarSrc="/placeholder.svg?height=40&width=40&text=CS"
+                avatarFallback="CS"
                 plantContext={plantName}
                 className="h-[600px] border-none shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] bg-card/30 backdrop-blur-sm rounded-[3rem] overflow-hidden"
               />

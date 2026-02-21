@@ -19,21 +19,21 @@ const roboto = Roboto({
 })
 
 export const metadata = {
-  title: "KhetiBuddy | AI-Powered Smart Agriculture Assistant",
+  title: "CropSaviour | AI-Powered Smart Agriculture Assistant",
   description: "Advanced plant health monitoring and disease detection using state-of-the-art AI. Get instant diagnostics and treatment recommendations for your crops.",
-  keywords: ["agriculture", "AI", "plant health", "crop disease detection", "smart farming", "KhetiBuddy"],
-  authors: [{ name: "KhetiBuddy Team" }],
+  keywords: ["agriculture", "AI", "plant health", "crop disease detection", "smart farming", "CropSaviour"],
+  authors: [{ name: "CropSaviour Team" }],
   openGraph: {
-    title: "KhetiBuddy - AI Plant Health Assistant",
+    title: "CropSaviour - AI Plant Health Assistant",
     description: "Your intelligent companion for plant health monitoring and disease detection.",
-    url: "https://khetibuddy.vercel.app",
-    siteName: "KhetiBuddy",
+    url: "https://cropsaviour.vercel.app",
+    siteName: "CropSaviour",
     images: [
       {
         url: "/Home.jpg",
         width: 1200,
         height: 630,
-        alt: "KhetiBuddy Dashboard",
+        alt: "CropSaviour Dashboard",
       },
     ],
     locale: "en_US",
@@ -41,7 +41,7 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "KhetiBuddy | AI Plant Health Assistant",
+    title: "CropSaviour | AI Plant Health Assistant",
     description: "Advanced plant health monitoring and disease detection using AI.",
     images: ["/Home.jpg"],
   },

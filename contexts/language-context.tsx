@@ -21,7 +21,7 @@ export const translations: Translations = {
 
     // ── Home Hero ────────────────────────────────────
     "home.title": "Your Intelligent Plant Care Companion",
-    "home.subtitle": "KhetiBuddy helps you identify plants and detect diseases with advanced AI technology. Upload a photo and get instant insights.",
+    "home.subtitle": "CropSaviour helps you identify plants and detect diseases with advanced AI technology. Upload a photo and get instant insights.",
     "home.exploreBtn": "Explore Plants",
     "home.detectBtn": "Detect Diseases",
     "home.trustedBy": "Trusted by",
@@ -39,7 +39,7 @@ export const translations: Translations = {
     "home.features.diagnostics.title": "Instant Diagnostics",
     "home.features.diagnostics.desc": "Snap a photo and get immediate results. Our neural networks analyze leaves in real-time.",
     "home.features.chatbot.title": "Smart Chatbot",
-    "home.features.chatbot.desc": "Talk to KhetiAssistant for personalized treatment advice and regional farming tips.",
+    "home.features.chatbot.desc": "Talk to CropAssistant for personalized treatment advice and regional farming tips.",
     "home.features.multilingual.title": "Multilingual Support",
     "home.features.multilingual.desc": "Available in Hindi and English for wider accessibility across India's farming communities.",
 
@@ -61,7 +61,7 @@ export const translations: Translations = {
 
     // ── Footer ────────────────────────────────────────
     "footer.desc": "Empowering farmers worldwide with state-of-the-art AI technology for sustainable and profitable agriculture.",
-    "footer.rights": "© 2026 KhetiBuddy AI. All rights reserved.",
+    "footer.rights": "© 2026 CropSaviour AI. All rights reserved.",
     "footer.capabilities": "Capabilities",
     "footer.company": "Company",
     "footer.newsletter": "Newsletter",
@@ -72,7 +72,7 @@ export const translations: Translations = {
     "footer.cap.growth": "Growth Tracking",
     "footer.cap.soil": "Soil Analysis",
     "footer.cap.irrigation": "Smart Irrigation",
-    "footer.company.about": "About KhetiBuddy",
+    "footer.company.about": "About CropSaviour",
     "footer.company.impact": "Impact Stories",
     "footer.company.research": "Research",
     "footer.company.docs": "Documentation",
@@ -209,8 +209,8 @@ export const translations: Translations = {
 
     // ── Home Hero ────────────────────────────────────
     "home.title": "आपका बुद्धिमान पौधों की देखभाल साथी",
-    "home.subtitle": "खेतीबडी उन्नत AI तकनीक के साथ पौधों की पहचान करने और रोगों का पता लगाने में मदद करता है। फोटो अपलोड करें और तुरंत जानकारी प्राप्त करें।",
-    "home.exploreBtn": "पौधे एक्सप्लोर करें",
+    "home.subtitle": "क्रॉपसेवियर उन्नत AI तकनीक के साथ पौधों की पहचान करने और रोगों का पता लगाने में मदद करता है। फोटो अपलोड करें और तुरंत जानकारी प्राप्त करें।",
+    "home.exploreBtn": "पौड़े एक्सप्लोर करें",
     "home.detectBtn": "रोग पहचानें",
     "home.trustedBy": "विश्वसनीय",
     "home.farmers": "किसानों द्वारा विश्वभर में",
@@ -227,7 +227,7 @@ export const translations: Translations = {
     "home.features.diagnostics.title": "तत्काल निदान",
     "home.features.diagnostics.desc": "फोटो खींचें और तुरंत परिणाम पाएं। हमारे न्यूरल नेटवर्क पत्तियों का रियल-टाइम विश्लेषण करते हैं।",
     "home.features.chatbot.title": "स्मार्ट चैटबॉट",
-    "home.features.chatbot.desc": "व्यक्तिगत उपचार सलाह और क्षेत्रीय खेती के सुझावों के लिए खेतीसहायक से बात करें।",
+    "home.features.chatbot.desc": "व्यक्तिगत उपचार सलाह और क्षेत्रीय खेती के सुझावों के लिए क्रॉप असिस्टेंट से बात करें।",
     "home.features.multilingual.title": "बहुभाषी समर्थन",
     "home.features.multilingual.desc": "भारत के किसान समुदायों में व्यापक पहुंच के लिए हिंदी और अंग्रेजी में उपलब्ध।",
 
@@ -249,7 +249,7 @@ export const translations: Translations = {
 
     // ── Footer ────────────────────────────────────────
     "footer.desc": "टिकाऊ और लाभदायक कृषि के लिए अत्याधुनिक AI तकनीक के साथ दुनिया भर के किसानों को सशक्त बनाना।",
-    "footer.rights": "© 2026 खेतीबडी AI। सर्वाधिकार सुरक्षित।",
+    "footer.rights": "© 2026 क्रॉपसेवियर AI। सर्वाधिकार सुरक्षित।",
     "footer.capabilities": "क्षमताएँ",
     "footer.company": "कंपनी",
     "footer.newsletter": "न्यूज़लेटर",
@@ -260,7 +260,7 @@ export const translations: Translations = {
     "footer.cap.growth": "विकास ट्रैकिंग",
     "footer.cap.soil": "मिट्टी विश्लेषण",
     "footer.cap.irrigation": "स्मार्ट सिंचाई",
-    "footer.company.about": "खेतीबडी के बारे में",
+    "footer.company.about": "क्रॉपसेवियर के बारे में",
     "footer.company.impact": "प्रभाव की कहानियाँ",
     "footer.company.research": "अनुसंधान",
     "footer.company.docs": "प्रलेखन",

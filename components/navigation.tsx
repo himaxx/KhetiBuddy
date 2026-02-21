@@ -69,7 +69,7 @@ export default function Navigation() {
               <Leaf className="h-6 w-6 text-primary" />
             </motion.div>
             <span className="font-extrabold text-2xl tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70">
-              KhetiBuddy
+              CropSaviour
             </span>
           </Link>
 

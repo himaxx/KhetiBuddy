@@ -305,7 +305,7 @@ export default function Home() {
                         </div>
                         <div>
                           <p className="text-xs font-black uppercase tracking-widest opacity-60">{t("home.cta.system")}</p>
-                          <p className="font-bold underline">KhetiBuddy Neural v4.0</p>
+                          <p className="font-bold underline">CropSaviour Neural v4.0</p>
                         </div>
                       </div>
                       <div className="space-y-4">
@@ -336,7 +336,7 @@ export default function Home() {
                   <div className="bg-primary/10 p-2 rounded-xl">
                     <Leaf className="h-6 w-6 text-primary" />
                   </div>
-                  <span className="font-extrabold text-2xl tracking-tighter">KhetiBuddy</span>
+                  <span className="font-extrabold text-2xl tracking-tighter">CropSaviour</span>
                 </Link>
                 <p className="text-muted-foreground font-medium leading-relaxed">{t("footer.desc")}</p>
                 <div className="flex gap-4">

@@ -1,4 +1,4 @@
-# 🌱 KhetiBuddy: Your AI Agriculture Buddy
+# 🌱 CropSaviour: Your AI Agriculture Buddy
 
 <div align="center">
 
@@ -33,7 +33,7 @@
   
   <!-- Main Title -->
   <text x="400" y="80" font-family="Arial, sans-serif" font-size="48" font-weight="bold" text-anchor="middle" fill="#1f2937">
-    KhetiBuddy
+    CropSaviour
     <animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite"/>
   </text>
   
@@ -71,19 +71,19 @@
 <table align="center">
   <tr>
     <td align="center">
-      <img src="https://img.shields.io/github/stars/himaxx/KhetiBuddy?style=for-the-badge&logo=github&color=yellow" alt="Stars">
+      <img src="https://img.shields.io/github/stars/himaxx/CropSaviour?style=for-the-badge&logo=github&color=yellow" alt="Stars">
       <br><b>⭐ Stars</b>
     </td>
     <td align="center">
-      <img src="https://img.shields.io/github/forks/himaxx/KhetiBuddy?style=for-the-badge&logo=github&color=blue" alt="Forks">
+      <img src="https://img.shields.io/github/forks/himaxx/CropSaviour?style=for-the-badge&logo=github&color=blue" alt="Forks">
       <br><b>🍴 Forks</b>
     </td>
     <td align="center">
-      <img src="https://img.shields.io/github/issues/himaxx/KhetiBuddy?style=for-the-badge&logo=github&color=red" alt="Issues">
+      <img src="https://img.shields.io/github/issues/himaxx/CropSaviour?style=for-the-badge&logo=github&color=red" alt="Issues">
       <br><b>🐛 Issues</b>
     </td>
     <td align="center">
-      <img src="https://img.shields.io/github/license/himaxx/KhetiBuddy?style=for-the-badge&logo=github&color=green" alt="License">
+      <img src="https://img.shields.io/github/license/himaxx/CropSaviour?style=for-the-badge&logo=github&color=green" alt="License">
       <br><b>📄 License</b>
     </td>
   </tr>
@@ -93,7 +93,7 @@
 
 ---
 
-## 🚀 **What Makes KhetiBuddy Special?**
+## 🚀 **What Makes CropSaviour Special?**
 
 <div align="center">
 
@@ -147,7 +147,7 @@ graph TD
     A --> D[📚 Limited Expert Knowledge]
     A --> E[🌐 Technology Gap]
     
-    F[🤖 KhetiBuddy Solution] --> G[⚡ Early Detection]
+    F[🤖 CropSaviour Solution] --> G[⚡ Early Detection]
     F --> H[🎯 AI-Powered Insights]
     F --> I[📱 Accessible Technology]
     F --> J[💰 Reduced Losses]
@@ -212,8 +212,8 @@ graph TD
 ### 🛠️ **Technical Architecture**
 
 ```python
-# KhetiBuddy Core Engine
-class KhetiBuddyAI:
+# CropSaviour Core Engine
+class CropSaviourAI:
     def __init__(self):
         self.cnn_model = load_disease_detection_model()
         self.nlp_engine = initialize_chatbot()
@@ -244,7 +244,7 @@ class KhetiBuddyAI:
 <div align="center">
 
 ### 🏠 **Modern Dashboard**
-<img src="https://github.com/himaxx/KhetiBuddy/blob/main/Home.jpg" alt="KhetiBuddy Dashboard" width="100%" style="border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);"/>
+<img src="https://github.com/himaxx/CropSaviour/blob/main/Home.jpg" alt="CropSaviour Dashboard" width="100%" style="border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);"/>
 
 <br><br>
 
@@ -252,16 +252,16 @@ class KhetiBuddyAI:
 <table>
   <tr>
     <td width="50%">
-      <img src="https://github.com/himaxx/KhetiBuddy/blob/main/DD1.jpg" alt="Disease Detection 1" width="100%" style="border-radius: 10px;"/>
+      <img src="https://github.com/himaxx/CropSaviour/blob/main/DD1.jpg" alt="Disease Detection 1" width="100%" style="border-radius: 10px;"/>
     </td>
     <td width="50%">
-      <img src="https://github.com/himaxx/KhetiBuddy/blob/main/DD2.jpg" alt="Disease Detection 2" width="100%" style="border-radius: 10px;"/>
+      <img src="https://github.com/himaxx/CropSaviour/blob/main/DD2.jpg" alt="Disease Detection 2" width="100%" style="border-radius: 10px;"/>
     </td>
   </tr>
 </table>
 
 ### 🎬 **Live Demo**
-<img src="https://github.com/himaxx/KhetiBuddy/blob/main/KhetiBuddy%20-%20Modern%20Plant%20Health%20Assistant.gif" alt="KhetiBuddy Demo" width="100%" style="border-radius: 15px;"/>
+<img src="https://github.com/himaxx/CropSaviour/blob/main/CropSaviour%20-%20Modern%20Plant%20Health%20Assistant.gif" alt="CropSaviour Demo" width="100%" style="border-radius: 15px;"/>
 
 </div>
 

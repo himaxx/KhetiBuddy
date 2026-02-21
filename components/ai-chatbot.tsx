@@ -47,11 +47,11 @@ interface AIChatbotProps {
 }
 
 export default function AIChatbot({
-  title = "KhetiBuddy AI Assistant",
+  title = "CropSaviour AI Assistant",
   description = "Ask me anything about plants and gardening",
   initialMessage = "Hello! I'm your plant assistant. How can I help you today?",
-  avatarSrc = "/placeholder.svg?height=40&width=40&text=KB",
-  avatarFallback = "KB",
+  avatarSrc = "/placeholder.svg?height=40&width=40&text=CS",
+  avatarFallback = "CS",
   className = "",
   plantContext,
   preloadedMessage,

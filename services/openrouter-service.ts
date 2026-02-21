@@ -200,7 +200,7 @@ async function callOpenRouter(body: object): Promise<any> {
             "Content-Type": "application/json",
             Authorization: `Bearer ${OPENROUTER_API_KEY}`,
             "HTTP-Referer": getOrigin(),
-            "X-Title": "KhetiBuddy AI",
+            "X-Title": "CropSaviour AI",
         },
         body: JSON.stringify(body),
     })
@@ -262,7 +262,7 @@ export const openrouterService = {
         const systemMessage = {
             role: "system",
             content:
-                "You are KhetiBuddy AI, a world-class agricultural scientist and plant pathologist. " +
+                "You are CropSaviour AI, a world-class agricultural scientist and plant pathologist. " +
                 "Provide precise, evidence-based, actionable advice for farmers. " +
                 "Use structured formatting: numbered steps, bold for key terms, and bullet points for lists. " +
                 "Prioritise organic and affordable solutions before recommending chemical treatments.",
