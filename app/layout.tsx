@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { LanguageProvider } from "@/contexts/language-context"
 import { cn } from "@/lib/utils"
 import Navigation from "@/components/navigation"
+import SplashLoader from "@/components/splash-loader"
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -71,6 +72,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <LanguageProvider>
             <div className="relative flex min-h-screen flex-col">
+              <SplashLoader />
               <Navigation />
               <main className="flex-1 overflow-x-hidden">{children}</main>
             </div>
