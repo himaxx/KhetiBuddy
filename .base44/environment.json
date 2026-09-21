@@ -1,0 +1,13 @@
+{
+  "previewPort": 3000,
+  "healthPath": "/",
+  "startCommand": "docker compose -f docker-compose.base44.yml up -d",
+  "secrets": [
+    {
+      "name": "NEXT_PUBLIC_OPENROUTER_API_KEY",
+      "description": "OpenRouter API key for AI plant disease detection and chatbot features. Get one at https://openrouter.ai/keys. The app boots without it (a fallback key is hardcoded), but AI features won't work reliably without your own key.",
+      "requiredAtBoot": false,
+      "generatedForDevelopment": false
+    }
+  ]
+}
